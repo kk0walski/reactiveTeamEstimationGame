@@ -107,6 +107,7 @@ export default class App extends Component {
             <DragDropContext onDragEnd={this.onDragEnd}>
                 <Droppable droppableId="all-columns" direction="horizontal" type="column">
                     {(provided) => (
+                        <div>
                         <Container
                             {...provided.droppableProps}
                             ref={provided.innerRef}
@@ -116,6 +117,8 @@ export default class App extends Component {
                                 return <InnerList key={column.id} column={column} taskMap={this.state.tasks} index={index} />;
                             })}
                         </Container>
+                            {provided.placeholder}
+                        </div>
                     )}
                 </Droppable>
             </DragDropContext>

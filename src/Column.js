@@ -1,15 +1,21 @@
 import React, { Component } from 'react'
 import styled from 'styled-components';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
+import { grid, colors } from './constants';
 import Task from './Task';
 
 const Container = styled.div`
-    margin: 8px;
-    border: 1px solid lightgrey;
-    border-radius: 2px;
-    width: 220px;
-    display: flex;
+    background-color: ${({ isDraggingOver }) =>
+        isDraggingOver ? colors.blue.lighter : colors.blue.light};
+    display: inline-flex;
     flex-direction: column;
+    opacity: ${({ isDropDisabled }) => (isDropDisabled ? 0.5 : 'inherit')};
+    margin: ${grid}px;
+    border: ${grid}px;
+    padding-bottom: 0;
+    transition: background-color 0.1s ease, opacity 0.1s ease;
+    user-select: none;
+    width: 250px;
     `;
 const Title = styled.h3`
     padding: 8px;
@@ -17,49 +23,52 @@ const Title = styled.h3`
 const TaskList = styled.div`
     padding: 8px;
     transition: background-color 0.2s ease;
-    background-color: ${props => (props.isDraggingOver ? 'skyblue' : 'white')}
+    background-color: ${props => (props.isDraggingOver ? 'skyblue' : 'inherit')}
     flex-grow: 1;
-    min-height: 100px;
+    min-height: 0;
 `;
 
 class InnerList extends Component {
-    shouldComponentUpdate(nextProps){
-        if(nextProps === this.props.tasks){
+    shouldComponentUpdate(nextProps) {
+        if (nextProps === this.props.tasks) {
             return false;
         }
         return true;
     }
 
-   render() {
-    return this.props.tasks.map((task, index) => (
-    <Task key={task.id} task={task} index={index} />
-    ));
-  }
+    render() {
+        return this.props.tasks.map((task, index) => (
+            <Task key={task.id} task={task} index={index} />
+        ));
+    }
 }
 
 export default class Column extends Component {
     render() {
         return (
-            <Draggable draggableId={this.props.column.id} index={this.props.index}>
+            <Draggable draggableId={this.props.column.id} index={this.props.index} disableInteractiveElementBlocking>
                 {(provided) => (
-                    <Container
-                        {...provided.draggableProps}
-                        ref={provided.innerRef}
-                    >
-                        <Title {...provided.dragHandleProps} >{this.props.column.title}</Title>
-                        <Droppable droppableId={this.props.column.id}>
-                            {(provided, snapchot) => (
-                                <TaskList
-                                    ref={provided.innerRef}
-                                    {...provided.droppableProps}
-                                    isDraggingOver={snapchot.isDraggingOver}
-                                >
-                                   <InnerList tasks={this.props.tasks}/>
-                                    {provided.placeholder}
-                                </TaskList>
-                            )}
-                        </Droppable>
-                    </Container>
+                    <div>
+                        <Container
+                            {...provided.draggableProps}
+                            ref={provided.innerRef}
+                        >
+                            <Title {...provided.dragHandleProps} >{this.props.column.title}</Title>
+                            <Droppable droppableId={this.props.column.id}>
+                                {(provided, snapchot) => (
+                                    <TaskList
+                                        ref={provided.innerRef}
+                                        {...provided.droppableProps}
+                                        isDraggingOver={snapchot.isDraggingOver}
+                                    >
+                                        <InnerList tasks={this.props.tasks} />
+                                        {provided.placeholder}
+                                    </TaskList>
+                                )}
+                            </Droppable>
+                        </Container>
+                        {provided.placeholder}
+                    </div>
                 )}
             </Draggable>
         )
