@@ -19,7 +19,6 @@ export default class App extends Component {
     onDragEnd = result => {
         const { destination, source, draggableId } = result;
 
-
         if (!destination) {
             return
         }
@@ -31,26 +30,55 @@ export default class App extends Component {
             return
         }
 
-        const column = this.state.columns[source.droppableId];
-        const newTaskIds = Array.from(column.taskIds);
-        newTaskIds.splice(source.index, 1);
-        newTaskIds.splice(destination.index, 0, draggableId);
+        const start = this.state.columns[source.droppableId];
+        const finish = this.state.columns[destination.droppableId];
 
-        const newColumn = {
-            ...column,
-            taskIds: newTaskIds
+        if (start === finish) {
+            const newTaskIds = Array.from(start.taskIds);
+            newTaskIds.splice(source.index, 1);
+            newTaskIds.splice(destination.index, 0, draggableId);
+
+            const newColumn = {
+                ...start,
+                taskIds: newTaskIds
+            };
+
+            const newState = {
+                ...this.state,
+                columns: {
+                    ...this.state.columns,
+                    [newColumn.id]: newColumn
+                }
+            }
+
+            this.setState(newState);
+            return;
+        }
+
+        // Moving from one list to another
+        const startTaskIds = Array.from(start.taskIds);
+        startTaskIds.splice(source.index, 1);
+        const newStart = {
+            ...start,
+            taskIds: startTaskIds,
         };
 
+        const finishTaskIds = Array.from(finish.taskIds);
+        finishTaskIds.splice(destination.index, 0, draggableId);
+        const newFinish = {
+            ...finish,
+            taskIds: finishTaskIds,
+        };
         const newState = {
             ...this.state,
             columns: {
                 ...this.state.columns,
-                [newColumn.id]: newColumn
+                [newStart.id]: newStart,
+                [newFinish.id]: newFinish
             }
-        }
-
+        };
         this.setState(newState);
-    }
+    };
 
     render() {
         return (
