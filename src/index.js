@@ -5,6 +5,7 @@ import configureStore from './store/configureStore';
 import Board from './components/Board';
 import initialData from './initial-data';
 import * as serviceWorker from './serviceWorker';
+import './styles/styles.scss';
 
 const store = configureStore();
 

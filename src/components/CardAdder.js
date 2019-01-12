@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import ClickOutside from './ClickOutside';
 import Textarea from "react-textarea-autosize";
 
- export default class CardAdder extends Component {
+export default class CardAdder extends Component {
 
-     constructor() {
+    constructor() {
         super();
         this.state = {
             newTitle: "",
@@ -13,35 +13,37 @@ import Textarea from "react-textarea-autosize";
         };
     }
 
-     toggleCardComposer = () => {
+    toggleCardComposer = () => {
         this.setState({ isOpen: !this.state.isOpen })
     }
 
-     render() {
+    render() {
         const { newTitle, newText, isOpen } = this.state;
         return isOpen ? (
             <ClickOutside handleClickOutside={this.toggleCardComposer}>
-                <form>
-                    <Textarea
-                        autoFocus
-                        useCacheForDOMMeasurements
-                        minRows={1}
-                        value={newTitle}
-                        placeholder="Title"
-                    />
-                    <Textarea
-                        autoFocus
-                        useCacheForDOMMeasurements
-                        minRows={1}
-                        value={newText}
-                        placeholder="Text"
-                    />
-                </form>
+                <div className="cardContainer">
+                    <form>
+                        <Textarea
+                            autoFocus
+                            useCacheForDOMMeasurements
+                            minRows={1}
+                            value={newTitle}
+                            placeholder="Title"
+                        />
+                        <Textarea
+                            autoFocus
+                            useCacheForDOMMeasurements
+                            minRows={1}
+                            value={newText}
+                            placeholder="Text"
+                        />
+                    </form>
+                </div>
             </ClickOutside>
-            ) : (
-            <button onClick={this.toggleCardComposer} className="add-card-button">
-            +
+        ) : (
+                <button onClick={this.toggleCardComposer} className="add-card-button">
+                    +
             </button>
-        );
+            );
     }
 }

@@ -1,0 +1,29 @@
+@import "../base/settings";
+
+
+.ListContainer {
+    background-color: $listBg;
+    display: inline-flex;
+    flex-direction: column;
+    margin: $grid;
+    border: $grid;
+    padding-bottom: 0;
+    transition: background-color 0.1s ease, opacity 0.1s ease;
+    user-select: none;
+    width: 250px;
+}
+
+.listTitle {
+    padding: 8px;
+}
+
+.cardList {
+    padding: 8px;
+    transition: background-color 0.2s ease;
+    flex-grow: 1;
+    min-height: 0;
+}
+
+listTitle {
+    padding: 8px;
+}
