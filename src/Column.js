@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import { grid, colors } from './constants';
+import CardAdder from './CardAdder';
 import Task from './Task';
 
 const Container = styled.div`
@@ -54,16 +55,21 @@ export default class Column extends Component {
                             ref={provided.innerRef}
                         >
                             <Title {...provided.dragHandleProps} >{this.props.column.title}</Title>
-                            <Droppable droppableId={this.props.column.id}>
+                            <Droppable droppableId={this.props.column.id} type="task">
                                 {(provided, snapchot) => (
-                                    <TaskList
-                                        ref={provided.innerRef}
-                                        {...provided.droppableProps}
-                                        isDraggingOver={snapchot.isDraggingOver}
-                                    >
-                                        <InnerList tasks={this.props.tasks} />
+                                    <div>
+                                        <div>
+                                            <TaskList
+                                                ref={provided.innerRef}
+                                                {...provided.droppableProps}
+                                                isDraggingOver={snapchot.isDraggingOver}
+                                            >
+                                                <InnerList tasks={this.props.tasks} />
+                                            </TaskList>
+                                        </div>
+                                        <CardAdder columnId={this.props.column.id} tasks={this.props.tasks} />
                                         {provided.placeholder}
-                                    </TaskList>
+                                    </div>
                                 )}
                             </Droppable>
                         </Container>
